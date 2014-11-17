@@ -9,6 +9,7 @@ namespace ReportParser
 {
     class Program
     {
+        private static Encoding encoding = Encoding.Default;
         static void Main(string[] args)
         {
             //Инициализация
@@ -58,6 +59,8 @@ namespace ReportParser
             //Найдем все отчеты на диске C:, можно любое другое место
             var files = FindAllTextFilesOfFolder(sourceDir);
 
+            List<string> lines = new List<string>();
+
             //Обработаем все найденые файлы
             foreach (var file in files)
             {
@@ -67,8 +70,12 @@ namespace ReportParser
                 if(prms == null)
                     Console.WriteLine(string.Format("Файл {0} небыл обработан!", file));
 
-                ReportBuilder(destDir, prms);
+                ReportBuilder(destDir, prms, ref lines);                
             }
+
+            var dir = sourceDir + "\\" + DateTime.Now.ToString("yyy-MM-dd HH-mm");
+            Directory.CreateDirectory(dir);
+            System.IO.File.WriteAllLines(dir + "\\report.xls", lines, Encoding.Unicode);
             
 
             //Ожидаем ввода (чтобы консоль не закрылась)
@@ -98,8 +105,6 @@ namespace ReportParser
                 //Защищенный блок (здесь выполняем опасные операции. К примеру, нет указаного файла.)
 
                 //Установим кодировку файла отчета
-                Encoding encoding = Encoding.Default;
-
 
                 //Читаем все строки из файла
                 string[] lines = System.IO.File.ReadAllLines(path, encoding);
@@ -164,9 +169,17 @@ namespace ReportParser
         /// </summary>
         /// <param name="destPath">Путь для сохранения готового отчета</param>
         /// <param name="parms">Список пропарсеных параметров</param>
-        private static void ReportBuilder(string destPath, List<string[]> parms)
+        private static void ReportBuilder(string destPath, List<string[]> parms, ref List<string> lines)
         {
-
+            foreach(var line in parms)
+            {
+                string str = "";
+                foreach(var t in line)
+                {
+                    str += t + "\t";
+                }
+                lines.Add(str);
+            }
         }
     }
 }
