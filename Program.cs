@@ -11,15 +11,42 @@ namespace ReportParser
     {
         static void Main(string[] args)
         {
-            //Путь к файлу с отчетом
-            string path = @"report.txt";
+            string sourceDir = @"C:\";
+            string destDir = @"C:\BuilderReports";
+            //Найдем все отчеты на диске C:, можно любое другое место
+            var files = FindAllTextFilesOfFolder(sourceDir);
 
+            //Обработаем все найденые файлы
+            foreach (var file in files)
+            {
+                //Парсим отчет
+                var prms = ParseReport(file);
 
-            ParseReport(path);
+                if(prms == null)
+                    Console.WriteLine(string.Format("Файл {0} небыл обработан!", file));
+
+                ReportBuilder(destDir, prms);
+            }
             
 
             //Ожидаем ввода (чтобы консоль не закрылась)
             Console.Read();
+        }
+
+        private static IEnumerable<string> FindAllTextFilesOfFolder(string folder)
+        {
+            var dirs = Directory.GetFiles(folder);
+
+            List<string> files = new List<string>();
+
+            foreach (var file in dirs)
+            {
+                //Если файл с указаным расширением, то добавляем в наш список
+                if (Path.GetExtension(file).Equals(".txt"))
+                    files.Add(file);
+            }
+
+            return files;
         }
 
         private static List<string[]> ParseReport(string path)
@@ -84,6 +111,18 @@ namespace ReportParser
 
                 return null;
             }
+        }
+
+
+        //Создаем отчет
+        /// <summary>
+        /// Генератор отчета
+        /// </summary>
+        /// <param name="destPath">Путь для сохранения готового отчета</param>
+        /// <param name="parms">Список пропарсеных параметров</param>
+        private static void ReportBuilder(string destPath, List<string[]> parms)
+        {
+
         }
     }
 }
