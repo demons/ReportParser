@@ -4,3 +4,9 @@ C:\store\ReportParser\bin\Debug\ReportParser.pdb
 C:\store\ReportParser\obj\Debug\ReportParser.csprojResolveAssemblyReference.cache
 C:\store\ReportParser\obj\Debug\ReportParser.exe
 C:\store\ReportParser\obj\Debug\ReportParser.pdb
+D:\store\ReportParser\bin\Debug\ReportParser.exe.config
+D:\store\ReportParser\obj\Debug\ReportParser.exe
+D:\store\ReportParser\obj\Debug\ReportParser.pdb
+D:\store\ReportParser\bin\Debug\ReportParser.exe
+D:\store\ReportParser\bin\Debug\ReportParser.pdb
+D:\store\ReportParser\obj\Debug\ReportParser.csprojResolveAssemblyReference.cache
