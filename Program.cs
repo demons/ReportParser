@@ -11,8 +11,50 @@ namespace ReportParser
     {
         static void Main(string[] args)
         {
-            string sourceDir = @"C:\";
-            string destDir = @"C:\BuilderReports";
+            //Инициализация
+            string sourceDir = Directory.GetCurrentDirectory();
+            string destDir = Directory.GetCurrentDirectory();            
+
+            try
+            {
+                //Обрабатываем командную строку
+                for (var i = 0; i < args.Length; i++)
+                {
+                    if (args[i] == "-d")
+                    {
+                        if (args.Length <= i + 1)
+                            throw new Exception("Неверный формат командной строки! Введите -help для помощи");
+
+
+                        destDir = args[++i];
+                        continue;
+                    }
+                    if (args[i] == "-s")
+                    {
+                        if (args.Length <= i + 1)
+                            throw new Exception("Неверный формат командной строки! Введите -help для помощи");
+
+                        sourceDir = args[++i];
+                        continue;
+                    }
+                    if (args[i] == "-help")
+                    {
+                        Console.WriteLine("[-s sourceDir] \n \t- sourceDir каталог, в котором будет производиться поиск отчетов");
+                        Console.WriteLine("[-d destDir] \n \t- destDir каталог, в который будет производиться запись готовых отчетов");
+                        Console.WriteLine("Если параметры не указаны, по умолчанию будет использоваться текущий каталог для поиска и записи отчетов");
+                        continue;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.Read();
+                return;
+            }
+
+            Console.WriteLine("Поиск отчетов будет производиться в директори " + sourceDir + ". Сохранение готовых отчетов в директорию " + destDir + ".");
+
             //Найдем все отчеты на диске C:, можно любое другое место
             var files = FindAllTextFilesOfFolder(sourceDir);
 
@@ -83,6 +125,8 @@ namespace ReportParser
                 {
                     prms.Add(line.Split('\t'));
                 }
+
+                Console.WriteLine(string.Format("Файл {0}, успешно обработан.", path));
 
                 return prms;
 
