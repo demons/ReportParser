@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -84,7 +85,12 @@ namespace ReportParser
 
             //var dir = sourceDir + "\\" + DateTime.Now.ToString("yyy-MM-dd HH-mm");
             //Directory.CreateDirectory(dir);
-            System.IO.File.WriteAllLines(sourceDir + "\\report.xls", lines, Encoding.Unicode);
+
+            string reportPath = sourceDir + "\\report.xls";
+            System.IO.File.WriteAllLines(reportPath, lines, Encoding.Unicode);
+
+            Process.Start(reportPath);
+
             
 
             //Ожидаем ввода (чтобы консоль не закрылась)
