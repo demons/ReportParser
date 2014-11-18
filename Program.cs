@@ -59,6 +59,12 @@ namespace ReportParser
             //Найдем все отчеты на диске C:, можно любое другое место
             var files = FindAllTextFilesOfFolder(sourceDir);
 
+            //Инициализируем папку для бекапа
+            string backupDir = sourceDir + "\\" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+
+            //Создаем папку для backup'а
+            Directory.CreateDirectory(backupDir);
+
             List<string> lines = new List<string>();
 
             //Обработаем все найденые файлы
@@ -67,15 +73,18 @@ namespace ReportParser
                 //Парсим отчет
                 var prms = ParseReport(file);
 
+                //Перекладываем файл в папку для бекапа
+                File.Move(file, backupDir + "\\" + Path.GetFileName(file));
+
                 if(prms == null)
                     Console.WriteLine(string.Format("Файл {0} небыл обработан!", file));
 
-                ReportBuilder(destDir, prms, ref lines);                
+                ReportBuilder(destDir, prms, ref lines);
             }
 
-            var dir = sourceDir + "\\" + DateTime.Now.ToString("yyy-MM-dd HH-mm");
-            Directory.CreateDirectory(dir);
-            System.IO.File.WriteAllLines(dir + "\\report.xls", lines, Encoding.Unicode);
+            //var dir = sourceDir + "\\" + DateTime.Now.ToString("yyy-MM-dd HH-mm");
+            //Directory.CreateDirectory(dir);
+            System.IO.File.WriteAllLines(sourceDir + "\\report.xls", lines, Encoding.Unicode);
             
 
             //Ожидаем ввода (чтобы консоль не закрылась)
