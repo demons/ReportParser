@@ -90,11 +90,6 @@ namespace ReportParser
             System.IO.File.WriteAllLines(reportPath, lines, Encoding.Unicode);
 
             Process.Start(reportPath);
-
-            
-
-            //Ожидаем ввода (чтобы консоль не закрылась)
-            Console.Read();
         }
 
         private static IEnumerable<string> FindAllTextFilesOfFolder(string folder)
@@ -106,7 +101,7 @@ namespace ReportParser
             foreach (var file in dirs)
             {
                 //Если файл с указаным расширением, то добавляем в наш список
-                if (Path.GetExtension(file).Equals(".txt"))
+                if (Path.GetExtension(file).ToLower().Equals(".txt"))
                     files.Add(file);
             }
 
